@@ -33,7 +33,8 @@ def get_iris_data():
         query = '''
         
         SELECT *
-        FROM species
+        FROM measurements
+        JOIN species ON measurements.species_id = species.species_id
         ;
         '''
 
@@ -42,13 +43,13 @@ def get_iris_data():
         return iris_data
 
 def get_telco_data():
-     filename = 'telco_data.csv'
+    filename = 'telco_data.csv'
 
     if os.path.isfile(filename):
         return pd.read_csv(filename)
         
     else:
-        url = get_connection('telco_churned')
+        url = get_connection('telco_churn')
         query = '''
         
         SELECT *
@@ -60,5 +61,5 @@ def get_telco_data():
         '''
 
         telco_data = pd.read_sql(query, url)
-        telco_churn.to_csv(filename,index=0)
+        telco_data.to_csv(filename,index=0)
         return telco_data
